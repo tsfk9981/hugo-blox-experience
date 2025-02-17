@@ -1,0 +1,55 @@
+<!-- delete this file if you use the original experience block form the bootstrap -->
+
+{{/* Hugo Blox: Experience */}}
+{{/* Documentation: https://hugoblox.com/blocks/ */}}
+{{/* License: https://github.com/HugoBlox/hugo-blox-builder/blob/main/LICENSE.md */}}
+
+{{/* Initialise */}}
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+{{ $columns := $block.design.columns | default "1" }}
+{{ $icon := $block.content.icon | default "fa-circle-thin"}}
+
+
+<!-- Experience widget -->
+<div class="col-12 {{if eq $columns "2"}}col-lg-8{{end}}">
+  {{ with $block.content.text }}{{ . | emojify | $page.RenderString }}{{ end }}
+
+  {{ if $block.content.items }}
+  {{ $exp_len := len $block.content.items }}
+
+  {{/* Default to user's custom order (as requested in #1761) as Hugo doesn't support multiple sorts on params. */}}
+  {{ range $idx, $key := $block.content.items }}
+  <div class="row experience">
+    <ul class="fa-ul mb-0 ul-edu">
+      <li>
+        <i class="fa-li fa-solid {{ $icon }}"></i>
+        <div class="description">
+          <h3 class="section-subheading exp-title">{{.title | markdownify | emojify}}</h3>
+          <p class="section-subheading exp-company">{{- with .company_url}}<a href="{{.}}" target="_blank" rel="noopener">{{end}}{{.company |
+              markdownify | emojify}}{{with .company_url}}</a>{{end -}}</p>
+          <div class="exp-meta text-muted">
+            {{ (time .date_start) | time.Format ($block.content.date_format | default "2006") }} –
+            {{ if .date_end}}
+            {{ (time .date_end) | time.Format ($block.content.date_format | default "2006") }}
+            {{else}}
+            {{ i18n "present" | default "Present" }}
+            {{end}}
+            {{with .location}}
+            <span class="middot-divider"></span>
+            <span>{{.}}</span>
+            {{end}}
+            {{with .description}}<div class="card-text">{{. | markdownify | emojify}}</div>{{end}}
+          </div>
+          <div class="btn-links">
+            {{ range $index, $element := $key.skill }}
+              <div class="btn btn-outline-primary">{{ . }}</div>
+            {{end}}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  {{end}}
+  {{end}}
+</div>

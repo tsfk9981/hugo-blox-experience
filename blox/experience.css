@@ -1,0 +1,10 @@
+.exp-title {
+  margin-bottom: 0.1rem;
+}
+.btn {
+  border-radius: 0.2rem;
+}
+.btn-links .btn {
+  padding: 2px 0.2rem;
+  line-height: 1;
+}
